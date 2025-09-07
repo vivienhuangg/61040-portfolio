@@ -1,4 +1,3 @@
-# Assignment 1
 # Domains  
 
 - **Going Out for Food** – I enjoy exploring restaurants and eateries with friends — it’s one of my favorite ways to catch up while trying something new. The challenge is deciding where to go and keeping track of the places I’ve enjoyed.  
@@ -92,47 +91,47 @@
 ## Deciding Which Restaurant to Visit with Friends  
 
 **Evidence**  
-- [Choice overload – Caltech](https://caltech.edu/news/what-should-we-eat-cant-decide-brain-may-be-blame) – Explains cognitive overload in meal/venue choice, highlighting why groups often struggle to decide.  
-- [What Drives Restaurant Choice – Study](https://www.sciencedirect.com/science/article/pii/S0278431913000319) – Empirical evidence that price, cuisine, and service drive decisions, showing clear multi-criteria needs.  
-- [Consensus Costs in Group Decisions](https://www.cambridge.org/core/journals/behavioural-public-policy/article/consensus-costs) – Demonstrates why groups get “stuck,” validating demand for decision-support.  
-- [Gen Z Turns to TikTok for Food Discovery](https://www.wsj.com/articles/google-is-losing-gen-z-to-tiktok-search-engine-11658472896) – Shows students increasingly rely on social discovery over Google/Yelp.  
-- [Time Wasted Deciding Meals](https://nypost.com/2022/04/05/americans-spend-132-hours-a-year-deciding-what-to-eat-study/) – Survey reports Americans spend ~132 hours/year debating food choices.  
+- [Choice overload – Caltech](https://www.caltech.edu/about/news/scientists-uncover-why-you-cant-decide-what-order-lunch-83881) – Explains cognitive overload in meal/venue choice, highlighting why groups often struggle to decide.  
+- [What Drives Restaurant Choice – Study](https://pmc.ncbi.nlm.nih.gov/articles/PMC7503372/) – Empirical evidence that price, cuisine, and service drive decisions, showing clear multi-criteria needs.  
+- [Consensus Costs in Group Decisions](https://www.sciencedirect.com/science/article/abs/pii/S0020025522016097) – Demonstrates why groups get “stuck,” validating demand for decision-support.  
+- [Gen Z Turns to TikTok for Food Discovery](https://www.forbes.com/sites/johnkoetsier/2024/03/11/genz-dumping-google-for-tiktok-instagram-as-social-search-wins/) – Shows students increasingly rely on social discovery over Google/Yelp.  
+- [Time Wasted Deciding Meals](https://www.delicious.com.au/food-files/article/study-reveals-we-spend-too-much-time-deciding-eat/76g0qv2a) – Survey reports Americans spend ~132 hours/year debating food choices.  
 
 **Comparables**  
-- [Google Maps Lists](https://support.google.com/maps/answer/7377806?hl=en) – Lets friends save/share lists; weak on multi-user preference aggregation.  
+- [Google Maps Lists](https://www.google.com/maps) – Lets friends save/share lists; weak on multi-user preference aggregation.  
 - [Yelp Collections](https://www.yelp.com/collections) – Public curation, but limited tools for private group decision-making.  
 - [Beli](https://beliapp.com/) – Social bookmarking for places; weak on budget/diet constraint handling.  
-- [GroupMe](https://groupme.com/en-US/) – Common fallback, but noisy and unstructured for decision-making.  
+- [GroupMe](https://groupme.com) – Common fallback, but noisy and unstructured for decision-making.  
 
 ---
 
 ## Adding Notes on Recipes  
 
 **Evidence**  
-- [College Students Cook Often](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4042013/) – Study shows many students frequently cook, creating real annotation needs.  
-- [Cooking Education Boosts Skills](https://www.sciencedirect.com/science/article/abs/pii/S0195666312002090) – Education improves frequency/skills, supporting the importance of repeatability.  
-- [Home Cooking and Diet Quality](https://academic.oup.com/jn/article/148/4/561/5049699) – Home cooking links to better diets, so recipe recall contributes to health.  
+- [College Students Cook Often](https://www.sciencedirect.com/science/article/abs/pii/S1878450X21000020) – Study shows many students frequently cook, creating real annotation needs.  
+- [Cooking Education Boosts Skills](https://pmc.ncbi.nlm.nih.gov/articles/PMC10563711/) – Education improves frequency/skills, supporting the importance of repeatability.  
+- [Home Cooking and Diet Quality](https://pmc.ncbi.nlm.nih.gov/articles/PMC8728746/) – Home cooking links to better diets, so recipe recall contributes to health.  
 - [Food Waste Statistics – USDA](https://www.usda.gov/foodwaste/faqs) – Better recipe recall/notes could reduce waste from failed or forgotten tweaks.  
 
 **Comparables**  
 - [NYT Cooking Notes](https://cooking.nytimes.com/) – Strong annotation culture, but locked to their ecosystem.  
 - [Paprika Recipe Manager](https://www.paprikaapp.com/) – Power-user features, but clunky sharing outside the app.  
 - [AnyList](https://www.anylist.com/) – Good for shared lists/meal plans, but less on versioned notes.  
-- [Whisk / Samsung Food](https://www.samsungfood.com/) – Cross-platform saving; weaker per-attempt notes.  
+- [Samsung Food](https://www.samsungfood.com/) – Cross-platform saving; weaker per-attempt notes.  
 
 ---
 
 ## Communications with PNMs and Chapters  
 
 **Evidence**  
-- [NPC Recruitment Counselor Manual](https://npcwomen.org/wp-content/uploads/2020/05/Recruitment-Counselor-Guide.pdf) – Shows complexity of compliance for counselor communication.  
-- [Panhellenic Recruitment Rules – MIT](https://mitpanhel.mycampusdirector2.com/landing/) – Example of strict rules on PNMs/chapter interactions.  
-- [Reminder Efficacy Study](https://www.sciencedirect.com/science/article/pii/S0167268116301448) – Timely nudges improve attendance/compliance in other contexts.  
+- [NPC Recruitment Counselor Manual](https://npcwomen.org/login/college-panhellenics/recruitment-main/recruitment-counselor-training-guide/) – Shows complexity of compliance for counselor communication.  
+- [Panhellenic Recruitment Rules – MIT](https://docs.google.com/document/d/1lZ7fFn6P5Ayr4P_avoN-uGFjda9vZbx26_Z_YG69uMQ/edit?usp=sharing) – Example of strict rules on PNMs/chapter interactions.  
+- [Reminder Efficacy Study](https://www.sciencedirect.com/science/article/abs/pii/S016726812100408X) – Timely nudges improve attendance/compliance in other contexts.  
 
 **Comparables**  
-- [CampusDirector](https://icsrecruiter.com/) – Centralized registration/logistics; weak on real-time, PNM-friendly messaging.  
+- [CampusDirector](https://www.phiredup.com/campusdirector/) – Centralized registration/logistics; weak on real-time, PNM-friendly messaging.  
 - [ChapterBuilder](https://phiredup.com/chapterbuilder/) – Recruitment CRM, but not built for Panhel-wide formal recruitment rules.  
-- [OmegaOne](https://omegafi.com/omegaone/) – Strong for internal ops, not recruitment-specific communication.  
+- [OmegaOne](https://www.omegafi.com/solutions/omegaone) – Strong for internal ops, not recruitment-specific communication.  
 - [GreekTrack](https://greektrack.com/) – Broad management suite; lacks recruitment-focused, compliance-aware comms.  
 
 ---
