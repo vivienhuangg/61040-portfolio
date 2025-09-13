@@ -34,11 +34,8 @@
         a boolean Confirmed
 
   **actions**
-
     **register** (username: String, password: String): (user: User, token: SecretToken)
-
       **requires** No existing user has the same Username (case insensitive)
-
       **effects** creates a new User with Username = username, Password = password, Confirmed = false, Token = new token. Returns (User, token). Sends the token to the associated email. 
 
     **confirm** (username: String, token: SecretToken): (user: User)
@@ -165,7 +162,7 @@ a set of Bookings with
   listBookings (room: Room, date: Date): (bookings: Set \[Booking])
   
     **requires** room exists
-    
+
     **effects** return all bookings for the room that intersect with this date
 
 **notes**: may implement admin-level authority (who may cancel and view all the details of bookings).
@@ -173,8 +170,11 @@ a set of Bookings with
 ---
 
 **concept** BoardingPass \[User, Flight, Timestamp]
+
 **purpose** provide a digital pass for boarding a flight that updates automatically with flight changes
+
 **principle**
+
 each boarding pass corresponds to one passenger and one flight; 
 the pass contains information such as departure time, gate, seat, and status;
 when the flight’s information changes, the boarding pass is updated in real time;
