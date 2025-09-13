@@ -21,23 +21,36 @@
 
 # Exercise 2 
 **concept** PasswordAuthentication
+
   **purpose** limit access to known users
+
   **principle** after a user registers with a username and a password, they must confirm the registration using a secret token (sent via email) before they can authenticate and be treated as the same user each time
+
   **state**
     a set of Users with
         a string Username
         a string Password
         an optional SecretToken Token
         a boolean Confirmed
+
   **actions**
+
     **register** (username: String, password: String): (user: User, token: SecretToken)
+
       **requires** No existing user has the same Username (case insensitive)
+
       **effects** creates a new User with Username = username, Password = password, Confirmed = false, Token = new token. Returns (User, token). Sends the token to the associated email. 
+
     **confirm** (username: String, token: SecretToken): (user: User)
+
       **requires** A User u with Username = u.username exists. u.Confirmed = false. u.Token = token. 
+
       **effects** sets u.Confirmed = true. removes u.Token. return User u. 
+
     **authenticate** (username: String, password: String): (user: User)
+
       **requires** A User u with Username = u.username exists. That User's Password = u.password. u.Confirmed = true. 
+
       **effects** returns the User u.
 
 - What essential invariant must hold on the state? How is it preserved?
@@ -45,23 +58,34 @@
 
 # Exercise 3
 **concept** PersonalAccessToken \[User, Scope]
+
 **purpose** Allow programmatic authentication with revocable, scope-limited secrets instead of a password.
+
 **principle** A user can create multiple tokens; each has selected scopes and optional expiry. The secret is shown once at creation. A token works until it expires or is revoked.
 
 **state**
   a set of Tokens with
+
   an owner User
+
   a SecretString secret
+
   a Time expiresAt (optional)
+
   a flag revoked
+
   a set of Scopes Scopes
 
 **actions**
+
   createToken (owner: User, scopes: set of Scope, expiresAt?: Time): (token: Token, secret: SecretString)
+
     **effects** create a new token with given owner, scopes, expiry; return the token and its secret
 
 revokeToken (owner: User, token: Token)
+
   **requires** token exists, belongs to owner, and not revoked
+  
   **effects** mark the token revoked
 
 authenticateWithToken (user: User, secret: SecretString): (user: User)
@@ -72,11 +96,17 @@ Personal access tokens (PATs) differ from passwords by being multiple, scope-lim
 
 # Exercise 4
 **concept** URLShortener \[OriginalUrl, ShortSuffix]
+
 **purpose** Provide shorter, easily shareable URLs that redirect to longer, original URLs.
+
 **principle** a user submits a long URL and optionally a custom suffix;
+
 if no suffix is provided, the system generates one;
+
 each suffix uniquely identifies a mapping to an original URL;
+
 users can later resolve or delete shortened URLs.
+
 **state**
   a set of Records with
     a string originalUrl
@@ -101,28 +131,41 @@ users can later resolve or delete shortened URLs.
 ---
 
 **concept** ConferenceRoomBooking 
+
 **purpose** Allow users to reserve conference rooms at specific times.
+
 **principle** each room can be reserved for a specific time interval by at most one booking;
 a booking belongs to a user and can later be canceled by that user or an admin;
 the system allows inspection of existing reservations.
+
 **state**
 a set of Bookings with
+
   a room Room
+
   a user Reserver
+
   a time StartTime
+
   a time EndTime
 
 **actions**
   reserve (room: Room, user: User, start: Timestamp, end: Timestamp): (booking: Booking)
+
     **requires** room exists and no booking overlap from start (inclusive) to end (exclusive)
+
     **effects** create a new booking for the user in the room for this interval
 
   cancel (booking: Booking, user: User)
+
     **requires** booking exists and user is the booker or an admin
+
     **effects** remove the booking
 
   listBookings (room: Room, date: Date): (bookings: Set \[Booking])
+  
     **requires** room exists
+    
     **effects** return all bookings for the room that intersect with this date
 
 **notes**: may implement admin-level authority (who may cancel and view all the details of bookings).
