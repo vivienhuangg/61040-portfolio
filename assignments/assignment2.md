@@ -45,159 +45,198 @@ Cooks constantly tweak recipes — adjusting flavors, substituting ingredients, 
 
 **Nibble** empowers home cooks to build on their own experiences, reduce wasted effort, and share reliable recipes with others — turning messy screenshots and forgotten tweaks into a clear, evolving cooking journal.
 
-# Concept Design
 
-## Concept 1: Recipe
+Perfect—here’s a spec-style rewrite of your **Recipe App** concepts in the exact voice and structure of the **GiftRegistration** example, including explicit **requires** and **effects** for every action.
 
-**Purpose**
-Represent a base recipe, including ingredients, steps, and metadata, as the foundation for cooking and adaptation.
+---
 
-**Principle**
-A recipe should capture its original content faithfully, while supporting links to adaptations and notes.
+Awesome—here’s a tight, spec-style **Concept Design** for your recipe app that mirrors the GiftRegistration format exactly. You’ve got **4 concepts** (within the 3–5 target), each with **purpose, principle, state, and actions** using explicit **requires/effects**. Then a set of **essential synchronizations**, and finally a **brief note** explaining roles and generic instantiations.
 
-**State (SSF)**
+---
 
-```
+# Concept Specifications (Standard Form)
+
+## concept Recipe [User, Ingredient, Step, Tag]
+
+**purpose** track original recipes and serve as the base for annotation, sharing, and versioning
+**principle**
+a cook creates a recipe with a title, ingredients, and steps;
+adds optional tags for discovery;
+shares the recipe into notebooks for collaboration;
+and keeps the original stable while annotations and versions accumulate around it.
+
+**state**
 a set of Recipes with
-  a title String
-  an author String
-  a created Date
-  a list of Ingredients
-  a list of Steps
-```
 
-**Actions**
+* an owner User
+* a title String
+* a list of Ingredients
+* a list of Steps
+* a set of Tags
+* a set of Annotations
+* a set of Versions
+* a set of Notebooks (shares)
 
-* `createRecipe(title, author, ingredients, steps)`
-* `viewRecipe(recipe)`
-* `deleteRecipe(recipe)`
+**actions**
+createRecipe (owner: User, title: String, ingredients: List[Ingredient], steps: List[Step]): (recipe: Recipe)
+ requires owner exists, title nonempty, ingredients and steps well-formed
+ effects create a new recipe with this owner, title, ingredients, steps, empty tags/annotations/versions and no shares
 
----
+addTag (recipe: Recipe, tag: Tag)
+ requires recipe exists
+ effects add tag to recipe’s tag set
 
-## Concept 2: Annotation
+removeTag (recipe: Recipe, tag: Tag)
+ requires recipe exists and tag ∈ recipe.tags
+ effects remove tag from recipe’s tag set
 
-**Purpose**
-Allow cooks to attach notes to specific parts of a recipe (ingredient or step).
+deleteRecipe (requester: User, recipe: Recipe)
+ requires recipe exists and requester = recipe.owner
+ effects remove recipe from any shared notebooks; delete all versions and annotations belonging to recipe; delete recipe
 
-**Principle**
-Annotations are personal, contextual modifications that enrich the original recipe without overwriting it.
+## concept Annotation [User, Recipe]
 
-**State (SSF)**
+**purpose** let cooks attach contextual notes to a specific ingredient or step without mutating the original recipe
+**principle**
+a user may highlight an ingredient or step and record a note;
+annotations are visible wherever the recipe is visible;
+and they may later be edited, resolved, or removed.
 
-```
+**state**
 a set of Annotations with
-  a text String
-  a created Date
-  an author User
-  a target Recipe
-  an optional ingredient Ingredient
-  an optional step Step
-```
 
-**Actions**
+* an author User
+* a recipe Recipe
+* a target Kind ∈ {Ingredient, Step}
+* a targetIndex Number
+* a text String
+* a created DateTime
+* a resolved Flag
 
-* `addAnnotation(recipe, text, target)`
-* `editAnnotation(annotation, newText)`
-* `removeAnnotation(annotation)`
+**actions**
+annotate (author: User, recipe: Recipe, target: Kind, index: Number, text: String): (annotation: Annotation)
+ requires recipe exists; author can view recipe; text nonempty; if target = Ingredient then 0 ≤ index < |recipe.ingredients|; if target = Step then 0 ≤ index < |recipe.steps|
+ effects create a new annotation with resolved = false and add it to recipe.annotations
 
----
+editAnnotation (author: User, annotation: Annotation, newText: String)
+ requires annotation exists and author = annotation.author and newText nonempty
+ effects set annotation.text := newText
 
-## Concept 3: Version
+resolveAnnotation (resolver: User, annotation: Annotation, resolved: Flag)
+ requires annotation exists and resolver can view annotation.recipe
+ effects set annotation.resolved := resolved
 
-**Purpose**
-Record a snapshot of a recipe with modifications, creating a history of evolving adaptations.
+deleteAnnotation (author: User, annotation: Annotation)
+ requires annotation exists and author = annotation.author
+ effects remove annotation from its recipe and delete it
 
-**Principle**
-Each version preserves the original recipe while capturing a user’s modifications and outcomes.
+## concept Version [User, Recipe, Ingredient, Step]
 
-**State (SSF)**
+**purpose** capture concrete modifications to a recipe as an immutable snapshot, preserving a history of outcomes
+**principle**
+a user derives a version from a base recipe;
+the version records its own ingredients, steps, notes, and author;
+multiple versions may coexist to reflect forks or alternatives.
 
-```
+**state**
 a set of Versions with
-  a base Recipe
-  a created Date
-  a author User
-  a notes String
-  a list of Ingredients
-  a list of Steps
-```
 
-**Actions**
+* a recipe Recipe
+* a number String (e.g., “3.7”)
+* an author User
+* a notes String
+* a list of Ingredients
+* a list of Steps
+* a created DateTime
 
-* `createVersion(recipe, modifications, notes)`
-* `viewVersion(version)`
-* `deleteVersion(version)`
+**actions**
+createVersion (author: User, recipe: Recipe, number: String, notes: String, ingredients: List[Ingredient], steps: List[Step]): (version: Version)
+ requires recipe exists; author can view recipe; number not used by any existing version of this recipe; ingredients and steps well-formed
+ effects create a new version linked to recipe with provided fields; add to recipe.versions
 
----
+deleteVersion (requester: User, version: Version)
+ requires version exists and (requester = version.author or requester = version.recipe.owner)
+ effects remove version from recipe.versions and delete it
 
-## Concept 4: Notebook
+## concept Notebook [User, Recipe]
 
-**Purpose**
-Provide collaborative collections of recipes, versions, and annotations for groups of users.
+**purpose** provide collaborative collections where members can view, organize, and contribute to recipes and their versions
+**principle**
+an owner creates a notebook;
+invites members;
+and shares recipes into the notebook so all members can view the recipe, its versions, and annotations.
 
-**Principle**
-A notebook enables shared discovery and collective improvement of cooking practices.
-
-**State (SSF)**
-
-```
+**state**
 a set of Notebooks with
-  a title String
-  an owner User
-  a set of Recipes
-  a set of Versions
-  a set of Members
-```
 
-**Actions**
+* an owner User
+* a title String
+* a set of Members (Users)
+* a set of Recipes
 
-* `createNotebook(title, owner)`
-* `addRecipe(notebook, recipe)`
-* `shareNotebook(notebook, member)`
-* `removeNotebook(notebook)`
+**actions**
+createNotebook (owner: User, title: String): (notebook: Notebook)
+ requires owner exists and title nonempty
+ effects create a new notebook with this owner, empty members (or owner implicitly a member), and no recipes
+
+inviteMember (owner: User, notebook: Notebook, member: User)
+ requires notebook exists and owner = notebook.owner
+ effects add member to notebook.Members
+
+removeMember (owner: User, notebook: Notebook, member: User)
+ requires notebook exists and owner = notebook.owner and member ∈ notebook.Members
+ effects remove member from notebook.Members
+
+shareRecipe (sharer: User, recipe: Recipe, notebook: Notebook)
+ requires recipe and notebook exist; sharer can share recipe (sharer = recipe.owner or sharer ∈ notebook.Members and recipe.owner ∈ notebook.Members)
+ effects add recipe to notebook.Recipes and add notebook to recipe.Notebooks
+
+unshareRecipe (requester: User, recipe: Recipe, notebook: Notebook)
+ requires recipe and notebook exist and recipe ∈ notebook.Recipes and (requester = recipe.owner or requester = notebook.owner)
+ effects remove recipe from notebook.Recipes and remove notebook from recipe.Notebooks
+
+---
+
+# Synchronizations
+
+**sync: recipe sharing surfaces versions and annotations**
+when shareRecipe adds a recipe to a notebook
+requires recipe and notebook exist
+effects all notebook.Members gain view permission to recipe, recipe.versions, and recipe.annotations
+
+**sync: notify on new version**
+when createVersion creates a version and recipe ∈ some notebook.Recipes
+effects notify all members of those notebooks except the author with (recipe, version.number, version.notes)
+
+**sync: guard annotation target indices**
+when createVersion creates a version
+effects does not change existing annotations’ target indices (they continue to refer to the base recipe); UI diffing may highlight drift (out of scope of state)
+
+**sync: cascade deletes**
+when deleteRecipe deletes a recipe
+effects delete all versions and annotations linked to that recipe and unshare it from any notebooks
+
+**sync: member access**
+when inviteMember adds a member to a notebook
+effects the new member can view all recipes currently in the notebook and any added later
 
 ---
 
-# Essential Synchronizations
+# Notes
 
-1. **Link annotations to versions**
+These four concepts separate concerns cleanly. **Recipe** is the canonical content unit (ownership, ingredients, steps, tags). **Annotation** overlays personal and collaborative insight without mutating the original recipe. **Version** records concrete, reproducible modifications and outcomes as immutable snapshots, enabling parallel forks and history. **Notebook** scopes collaboration and access: owners manage membership, and sharing a recipe to a notebook confers view rights—propagated by synchronization—to its versions and annotations.
 
-```
-when an Annotation is created
-where the Annotation targets a Recipe
-then associate the Annotation with the most recent Version of that Recipe
-```
+**Access control** is enforced primarily through **Notebook** membership; actions that read or write to Recipe, Version, or Annotation require the actor to be the recipe owner, the version author, or a member of a notebook that contains the recipe, as specified in each action’s `requires`. This keeps authorization logic declarative and centralized via syncs.
 
-2. **Propagate recipe into notebook**
+**Generic parameters** instantiate as follows:
 
-```
-when a Recipe is added to a Notebook
-then all Versions of that Recipe are also visible in that Notebook
-```
+* `User` binds to application users (accounts).
+* `Ingredient` and `Step` are recipe-structured items (your app’s data types).
+* `Tag` is a lightweight label type (string or tagged object).
+* `Kind` (Ingredient | Step) is defined within Annotation to locate targets precisely.
 
-3. **Notify members of new version**
+This design gives you a minimal, orthogonal surface (4 concepts) with explicit preconditions/effects, while the synchronizations encode the cross-cutting ideas (sharing → access, version creation → notification, and lifecycle cascades).
 
-```
-when a Version is created
-where the Version belongs to a Recipe in a Notebook
-then notify all Members of the Notebook
-```
----
-
-# Notes on Concept Roles
-
-* **Recipe** is the core object, grounding all functionality.
-* **Annotation** attaches tweaks directly to recipe components, independent of who authored the recipe.
-* **Version** ensures personal and group adaptations are preserved in a timeline, enabling “forks” of recipes without overwriting the original.
-* **Notebook** introduces collaboration, allowing multiple users to contribute, view, and share annotated recipes.
-
-Generics:
-
-* The `User` type is instantiated as app users.
-* `Ingredient` and `Step` are primitive structural sub-objects belonging to recipes and versions.
-* Synchronizations ensure independence: Annotations don’t need to “know” about Notebooks; Notebooks simply surface versions/annotations by association.
-
----
 
 ## User Journey
 
@@ -211,7 +250,6 @@ It’s a Sunday afternoon, and Vivien and her roommates want to bring dessert to
 ![Cookbook View](assignment2images/cookbook_view.png)
 
 Vivien navigates to the **Cookbook View**.. In the sidebar, she sees all her cookbooks — *Family Recipes*, *Cocktails!!!*, and *WIP…*. She clicks on *Roommate Meals*, which opens up a grid of recipe cards. Alongside their *Steak* dinner recipe, she spots *Matcha Brownies*, tagged as *dessert, matcha, potluck*. The tags make it easy to find the right recipe for the occasion.
-
 
 ---
 
